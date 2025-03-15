@@ -1,38 +1,39 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LAB_7
+namespace Lab_7
 {
     public class Blue_5
     {
         public class Sportsman
         {
-            public string Name { get; }
-            public string Surname { get; }
-            public int Place { get; private set; }
-            public bool IsPlaceSet { get; private set; }
+            private string _name;
+            private string _surname;
+            private int _place;
+
+            public string Name => _name;
+            public string Surname => _surname;
+            public int Place => _place;
+
 
             public Sportsman(string name, string surname)
             {
-                Name = name;
-                Surname = surname;
-                Place = 0;
-                IsPlaceSet = false;
+                _name = name;
+                _surname = surname;
+                _place = 0;
             }
 
             public void SetPlace(int place)
             {
-                if (IsPlaceSet)
+                if (place > 0)
                 {
-                    Console.WriteLine("Место уже установлено.");
-                    return;
+                    _place = place;
                 }
-                Place = place;
-                IsPlaceSet = true;
+                else return;
             }
 
             public void Print()
@@ -43,9 +44,19 @@ namespace LAB_7
 
         public abstract class Team
         {
-            public string Name { get; }
-            public Sportsman[] Sportsmen { get; private set; }
+            private string _name;
+            private Sportsman[] _sportsmen;
             private int _count;
+
+            public string Name => _name;
+            public Sportsman[] Sportsmen
+            {
+                get
+                {
+                    if (_sportsmen == null) return null;
+                    return _sportsmen;
+                }
+            }
 
             public int SummaryScore
             {
@@ -92,8 +103,8 @@ namespace LAB_7
 
             protected Team(string name)
             {
-                Name = name;
-                Sportsmen = new Sportsman[6];
+                _name = name;
+                _sportsmen = new Sportsman[6];
                 _count = 0;
             }
 
@@ -114,26 +125,24 @@ namespace LAB_7
                 }
             }
 
-            public void Print()
+            public static void Sort(Team[] teams)
             {
-                Console.WriteLine($"Команда: {Name}");
-                Console.WriteLine($"Суммарный балл: {SummaryScore}");
-                Console.WriteLine($"Наивысшее место: {TopPlace}");
-                Console.WriteLine("Спортсмены:");
-
-                if (Sportsmen != null && Sportsmen.Length > 0)
+                if (teams == null || teams.Length == 0) return;
+                for (int i = 0; i < teams.Length; i++)
                 {
-                    foreach (var sportsman in Sportsmen)
+                    for (int j = 0; j < teams.Length - i - 1; j++)
                     {
-                        sportsman?.Print();
+                        if (teams[j].SummaryScore < teams[j + 1].SummaryScore)
+                        {
+                            (teams[j], teams[j + 1]) = (teams[j + 1], teams[j]);
+                        }
+                        else if (teams[j].SummaryScore == teams[j + 1].SummaryScore)
+                        {
+                            if (teams[j].TopPlace > teams[j + 1].TopPlace) (teams[j], teams[j + 1]) = (teams[j + 1], teams[j]);
+                        }
                     }
                 }
-                else
-                {
-                    Console.WriteLine("Нет данных о спортсменах.");
-                }
             }
-
             protected abstract double GetTeamStrength();
 
             public static Team GetChampion(Team[] teams)
@@ -156,6 +165,26 @@ namespace LAB_7
 
                 return champion;
             }
+            public void Print()
+            {
+                Console.WriteLine($"Команда: {Name}");
+                Console.WriteLine($"Суммарный балл: {SummaryScore}");
+                Console.WriteLine($"Наивысшее место: {TopPlace}");
+                Console.WriteLine("Спортсмены:");
+
+                if (Sportsmen != null && Sportsmen.Length > 0)
+                {
+                    foreach (var sportsman in Sportsmen)
+                    {
+                        sportsman?.Print();
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("Нет данных о спортсменах.");
+                }
+            }
+
         }
 
         public class ManTeam : Team
