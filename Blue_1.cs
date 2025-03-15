@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -12,9 +12,10 @@ namespace LAB_7
         public class Response
         {
             private string _name;
-            public string Name => _name;
-
             protected int _votes;
+
+            public string Name => _name;
+            public int Votes => _votes;
 
             public Response(string name)
             {
