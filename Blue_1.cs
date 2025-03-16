@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LAB_7
+namespace Lab_7
 {
     public class Blue_1
     {
