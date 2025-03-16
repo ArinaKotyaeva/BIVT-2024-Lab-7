@@ -162,7 +162,6 @@ namespace Lab_7
 
         public class HockeyPlayer : Participant
         {
-            private int totalPenaltyMinutes;
             private static int countPlayers;
             private static int totalPenaltyMinutesAllPlayers;
             public override bool IsExpelled
@@ -182,7 +181,6 @@ namespace Lab_7
                     return false;
                 }
             }
-
             public HockeyPlayer(string name, string surname) : base(name, surname)
             {
                 _penaltyTimes = new int[0];
