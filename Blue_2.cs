@@ -1,12 +1,12 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LAB_7
-{}
+namespace Lab_7
+{
     public class Blue_2
     {
         public abstract class WaterJump
@@ -67,8 +67,6 @@ namespace LAB_7
                 }
             }
         }
-
-
         public class WaterJump3m : WaterJump
         {
             public WaterJump3m(string name, int bank) : base(name, bank) { }
@@ -123,7 +121,6 @@ namespace LAB_7
                 }
             }
         }
-
         public struct Participant
         {
             private string _name;
@@ -198,7 +195,6 @@ namespace LAB_7
                     _ind++;
                 }
             }
-
             public static void Sort(Participant[] array)
             {
                 if (array == null || array.Length == 0) return;
@@ -214,7 +210,6 @@ namespace LAB_7
                     }
                 }
             }
-
             public void Print()
             {
                 Console.WriteLine($"Участник: {_name} {_surname}");
