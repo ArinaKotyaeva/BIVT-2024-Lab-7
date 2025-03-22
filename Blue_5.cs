@@ -19,7 +19,6 @@ namespace Lab_7
             public string Surname => _surname;
             public int Place => _place;
 
-
             public Sportsman(string name, string surname)
             {
                 _name = name;
@@ -66,16 +65,20 @@ namespace Lab_7
                         return 0;
 
                     int totalScore = 0;
+
                     foreach (var sportsman in Sportsmen)
                     {
-                        switch (sportsman.Place)
+                        if (sportsman != null) 
                         {
-                            case 1: totalScore += 5; break;
-                            case 2: totalScore += 4; break;
-                            case 3: totalScore += 3; break;
-                            case 4: totalScore += 2; break;
-                            case 5: totalScore += 1; break;
-                            default: break;
+                            switch (sportsman.Place)
+                            {
+                                case 1: totalScore += 5; break;
+                                case 2: totalScore += 4; break;
+                                case 3: totalScore += 3; break;
+                                case 4: totalScore += 2; break;
+                                case 5: totalScore += 1; break;
+                                default: break;
+                            }
                         }
                     }
                     return totalScore;
@@ -92,7 +95,7 @@ namespace Lab_7
                     int topPlace = int.MaxValue;
                     foreach (var sportsman in Sportsmen)
                     {
-                        if (sportsman.Place < topPlace && sportsman.Place != 0)
+                        if (sportsman != null && sportsman.Place < topPlace && sportsman.Place != 0) 
                         {
                             topPlace = sportsman.Place;
                         }
@@ -110,9 +113,13 @@ namespace Lab_7
 
             public void Add(Sportsman sportsman)
             {
-                if (_count < 6)
+                if (_count < 6 && sportsman != null)
                 {
-                    Sportsmen[_count] = sportsman;
+                    if (_sportsmen == null)
+                    {
+                        _sportsmen = new Sportsman[6]; 
+                    }
+                    _sportsmen[_count] = sportsman;
                     _count++;
                 }
             }
@@ -201,7 +208,7 @@ namespace Lab_7
 
                 foreach (var sportsman in Sportsmen)
                 {
-                    if (sportsman?.Place != 0)
+                    if (sportsman != null && sportsman.Place != 0) 
                     {
                         sumPlaces += sportsman.Place;
                         count++;
