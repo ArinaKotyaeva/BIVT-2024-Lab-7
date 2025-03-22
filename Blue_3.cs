@@ -27,7 +27,6 @@ namespace Lab_7
                     return copy;
                 }
             }
-
             public int Total
             {
                 get
@@ -42,7 +41,6 @@ namespace Lab_7
                     return total;
                 }
             }
-
             public virtual bool IsExpelled
             {
                 get
@@ -59,14 +57,12 @@ namespace Lab_7
                     return false;
                 }
             }
-
             public Participant(string name, string surname)
             {
                 _name = name;
                 _surname = surname;
                 _penaltyTimes = new int[0];
             }
-
             public virtual void PlayMatch(int penaltyMinutes)
             {
                 if (_penaltyTimes == null) return;
@@ -80,20 +76,27 @@ namespace Lab_7
             public static void Sort(Participant[] array)
             {
                 if (array == null || array.Length == 0) return;
+
                 for (int i = 0; i < array.Length; i++)
                 {
                     for (int j = 0; j < array.Length - i - 1; j++)
                     {
-                        if (array[j].Total > array[j + 1].Total)
+                        if (array[j] == null)
                         {
-                            var temp = array[j];
-                            array[j] = array[j + 1];
-                            array[j + 1] = temp;
+                            (array[j], array[j + 1]) = (array[j + 1], array[j]);
                         }
+                        else if (array[j + 1] == null)
+                        {
+                            continue;
+                        }
+                        else if (array[j].Total > array[j + 1].Total) // обращаемся к элементу массива и получаем значение этого элемента в свойвстве TotalTime
+                        {
+                            (array[j], array[j + 1]) = (array[j + 1], array[j]);
+                        }
+
                     }
                 }
-            }
-
+            } 
             public void Print()
             {
                 Console.WriteLine($"Участник: {Name} {Surname}");
@@ -120,7 +123,6 @@ namespace Lab_7
                 }
             }
         }
-
         public class BasketballPlayer : Participant
         {
             public override bool IsExpelled
@@ -130,18 +132,18 @@ namespace Lab_7
                     if (_penaltyTimes == null) return false;
 
                     int matchesWithFiveFouls = 0;
-                    foreach (var fouls in _penaltyTimes)
+                    for (int k = 0; k < _penaltyTimes.Length; k++)
                     {
-                        if (fouls == 5)
+                        if (_penaltyTimes[k] >= 5)
                         {
                             matchesWithFiveFouls++;
                         }
                     }
-
-                    bool condition1 = matchesWithFiveFouls > _penaltyTimes.Length * 0.1;
-                    bool condition2 = Total > _penaltyTimes.Length * 2;
-
-                    return condition1 || condition2;
+                    if (matchesWithFiveFouls > 0.1 * _penaltyTimes.Length || this.Total >= 2 * _penaltyTimes.Length)
+                    {
+                        return true;
+                    }
+                    return false;
                 }
             }
             public BasketballPlayer(string name, string surname) : base(name, surname)
@@ -153,47 +155,49 @@ namespace Lab_7
             {
                 if (_penaltyTimes == null || fouls < 0 || fouls > 5) return;
 
-                int[] newArray = new int[_penaltyTimes.Length + 1];
-                Array.Copy(_penaltyTimes, newArray, _penaltyTimes.Length);
-                _penaltyTimes = newArray;
-                _penaltyTimes[_penaltyTimes.Length - 1] = fouls;
+                if (fouls < 0 || fouls > 5)
+                {
+                    return;
+                }
+                base.PlayMatch(fouls);
             }
         }
-
         public class HockeyPlayer : Participant
         {
-            private static int countPlayers;
-            private static int totalPenaltyMinutesAllPlayers;
+            private int _countPlayers;
+            private int _time;
             public override bool IsExpelled
             {
                 get
                 {
                     if (_penaltyTimes == null) return false;
 
-                    foreach (int penalty in _penaltyTimes)
+                    for (int k = 0; k < _penaltyTimes.Length; k++)
                     {
-                        if (penalty >= 10)
+                        if (_penaltyTimes[k] >= 10)
                         {
                             return true;
                         }
                     }
-
+                    if (this.Total > 0.1 * _time / _countPlayers)
+                    {
+                        return true;
+                    }
                     return false;
                 }
             }
             public HockeyPlayer(string name, string surname) : base(name, surname)
             {
                 _penaltyTimes = new int[0];
-                countPlayers++;
+                _countPlayers++;
             }
-
             public override void PlayMatch(int penaltyMinutes)
             {
-                if (_penaltyTimes == null || _penaltyTimes.Length == 0) return;
+                if (_time == null) return;
                 base.PlayMatch(penaltyMinutes);
                 if (penaltyMinutes >= 0)
                 {
-                    totalPenaltyMinutesAllPlayers += penaltyMinutes;
+                    _time += penaltyMinutes;
                 }
             }
         }
