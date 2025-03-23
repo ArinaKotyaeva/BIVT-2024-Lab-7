@@ -164,8 +164,8 @@ namespace Lab_7
         }
         public class HockeyPlayer : Participant
         {
-            private int _countPlayers;
-            private int _time;
+            private int _countPlayers = 0;
+            private int _time = 0;
             public override bool IsExpelled
             {
                 get
