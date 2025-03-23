@@ -89,7 +89,7 @@ namespace Lab_7
                         {
                             continue;
                         }
-                        else if (array[j].Total > array[j + 1].Total) // обращаемся к элементу массива и получаем значение этого элемента в свойвстве TotalTime
+                        else if (array[j].Total > array[j + 1].Total) 
                         {
                             (array[j], array[j + 1]) = (array[j + 1], array[j]);
                         }
@@ -139,7 +139,7 @@ namespace Lab_7
                             matchesWithFiveFouls++;
                         }
                     }
-                    if (matchesWithFiveFouls > 0.1 * _penaltyTimes.Length || this.Total >= 2 * _penaltyTimes.Length)
+                    if (matchesWithFiveFouls > 0.1 * _penaltyTimes.Length || this.Total > 2 * _penaltyTimes.Length)
                     {
                         return true;
                     }
