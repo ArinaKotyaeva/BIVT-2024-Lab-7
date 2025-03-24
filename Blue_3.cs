@@ -155,17 +155,14 @@ namespace Lab_7
             {
                 if (_penaltyTimes == null || fouls < 0 || fouls > 5) return;
 
-                if (fouls < 0 || fouls > 5)
-                {
-                    return;
-                }
                 base.PlayMatch(fouls);
             }
         }
         public class HockeyPlayer : Participant
         {
-            private int _countPlayers = 0;
-            private int _time = 0;
+            private static int _countPlayers = 0;
+            private static int _totalTime = 0;
+
             public override bool IsExpelled
             {
                 get
@@ -179,26 +176,29 @@ namespace Lab_7
                             return true;
                         }
                     }
-                    if (this.Total > 0.1 * _time / _countPlayers)
+
+                    if (_countPlayers == 0) return false;
+                    double averageTime = (double)_totalTime / _countPlayers;
+                    if (this.Total > 0.1 * averageTime)
                     {
                         return true;
                     }
                     return false;
                 }
             }
+
             public HockeyPlayer(string name, string surname) : base(name, surname)
             {
                 _penaltyTimes = new int[0];
                 _countPlayers++;
             }
+
             public override void PlayMatch(int penaltyMinutes)
             {
-                if (_time == null) return;
+                if (penaltyMinutes < 0) return;
+
                 base.PlayMatch(penaltyMinutes);
-                if (penaltyMinutes >= 0)
-                {
-                    _time += penaltyMinutes;
-                }
+                _totalTime += penaltyMinutes;
             }
         }
     }
